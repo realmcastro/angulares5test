@@ -41,7 +41,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "budgets": [
@@ -55,7 +54,7 @@
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
                 }
-              ],
+              ]
             },
             "development": {
               "tsConfig": "tsconfig.app.json",
@@ -63,7 +62,7 @@
               "sourceMap": true,
               "vendorChunk": true,
               "extractLicenses": false,
-              "namedChunks": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
