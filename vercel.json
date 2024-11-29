@@ -1,15 +1,1 @@
-{
-  "builds": [
-    {
-      "src": "dist/meu-projeto-es5/**/*",
-      "use": "@vercel/static"
-    }
-  ],
-  "buildCommand": "npm install && npm run build -- --prod",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/dist/meu-projeto-es5/index.html"
-    }
-  ]
-}
+{ "rewrites": [{ "source": "/(.*)", "destination": "/" }] }
