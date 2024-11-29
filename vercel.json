@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "dist/meu-projeto-es5/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/dist/meu-projeto-es5/index.html"
+    }
+  ]
+}
