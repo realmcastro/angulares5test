@@ -1,0 +1,27 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  padding: 20px;
+}
+h1, h2 {
+  text-align: center;
+  color: #444;
+}
+p, ul {
+  font-size: 1.1rem;
+}
+ul {
+  list-style-type: square;
+  margin-left: 20px;
+}
+.highlight {
+  font-weight: bold;
+  color: #0056b3;
+}
+.explanation {
+  background-color: #eef;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+}
