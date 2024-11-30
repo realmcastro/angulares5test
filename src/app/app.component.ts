@@ -31,5 +31,6 @@ export class AppComponent implements OnInit {
 
     // Filtra as versões que são suportadas e retorna apenas os nomes
     this.supportedVersions = versions.filter(version => version.test()).map(version => version.name);
+    console.log(this.supportedVersions);
   }
 }
