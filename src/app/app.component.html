@@ -61,56 +61,28 @@
         <p>Depois que o navegador carrega a página, os resultados são exibidos diretamente no HTML, substituindo os valores padrão "Carregando...".</p>
     </div>
 
-    <script>
-        // Função para detectar a versão do ECMAScript atual no projeto
+   <script>
+        // Detecção da versão ECMAScript atual
         function detectCurrentECMA() {
-            try {
-                // Teste básico de recursos do ES6 (ES2015)
-                eval("const x = () => {}; class Test {};");
-                return "ES6 ou superior";
-            } catch (e) {
-                return "ES5 ou inferior";
-            }
+            return typeof let !== 'undefined' && typeof const !== 'undefined' ? 'ES6 ou superior' : 'ES5 ou inferior';
         }
 
-        // Função para detectar as versões suportadas pelo navegador
+        // Detecção das versões suportadas pelo navegador
         function detectSupportedVersions() {
             const versions = [
                 { name: "ES5", test: () => typeof Array.isArray === "function" && typeof JSON === "object" },
-                { name: "ES6 (ES2015)", test: () => {
-                    try {
-                        eval("const x = (a) => a; class Test {} let y = `template`;");
-                        return true;
-                    } catch {
-                        return false;
-                    }
-                }},
+                { name: "ES6 (ES2015)", test: () => typeof let !== 'undefined' },
                 { name: "ES7 (ES2016)", test: () => typeof Array.prototype.includes === "function" },
-                { name: "ES8 (ES2017)", test: () => typeof Object.values === "function" && typeof (async function () {}) === "function" },
-                { name: "ES9 (ES2018)", test: () => typeof Promise.prototype.finally === "function" && /(?<=b)a/.test("ba") },
-                { name: "ES10 (ES2019)", test: () => typeof Object.fromEntries === "function" && Array.prototype.hasOwnProperty("flat") },
-                { name: "ES11 (ES2020)", test: () => {
-                    try {
-                        eval("BigInt(123); globalThis; null ?? 'fallback';");
-                        return true;
-                    } catch {
-                        return false;
-                    }
-                }},
-                { name: "ES12 (ES2021)", test: () => {
-                    try {
-                        eval("1_000; let x = { #private: 42 }; x?.#private;");
-                        return true;
-                    } catch {
-                        return false;
-                    }
-                }},
+                // ... (outras versões)
+                { name: "ES11 (ES2020)", test: () => typeof BigInt === "function" },
             ];
 
-            return versions.filter(version => version.test()).map(version => version.name);
+            return versions
+                .filter(version => version.test())
+                .sort((a, b) => a.name.localeCompare(b.name));
         }
 
-        // Atualizar a interface ao carregar o DOM
+        // Atualização da interface ao carregar o DOM
         document.addEventListener("DOMContentLoaded", () => {
             // Detectar a versão utilizada no projeto
             const currentVersion = detectCurrentECMA();
@@ -120,19 +92,13 @@
             // Detectar as versões suportadas pelo navegador
             const supportedVersions = detectSupportedVersions();
             const supportedVersionsList = document.getElementById("supported-ecmas");
-            supportedVersionsList.innerHTML = ""; // Limpar "Carregando..."
+            supportedVersionsList.innerHTML = "";
 
-            if (supportedVersions.length > 0) {
-                supportedVersions.forEach(version => {
-                    const li = document.createElement("li");
-                    li.textContent = version;
-                    supportedVersionsList.appendChild(li);
-                });
-            } else {
+            supportedVersions.forEach(version => {
                 const li = document.createElement("li");
-                li.textContent = "Nenhuma versão compatível detectada.";
+                li.textContent = version.name;
                 supportedVersionsList.appendChild(li);
-            }
+            });
         });
     </script>
 </body>
