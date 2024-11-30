@@ -7,13 +7,14 @@
 </head>
 <body>
     <h1>Detecção de ECMAScript</h1>
-    <p><strong>Versão do ECMAScript utilizada atualmente no projeto:</strong> <span id="current-ecma"></span></p>
+    <p><strong>Versão do ECMAScript utilizada atualmente no projeto:</strong> <span id="current-ecma">Detectando...</span></p>
     <p><strong>Versões de ECMAScript suportadas pelo navegador:</strong></p>
     <ul id="supported-ecmas"></ul>
 
     <script>
-        (function detectECMAScript() {
-            // Função para detectar a versão atual do ECMAScript no projeto
+        // Esperar o DOM carregar completamente
+        document.addEventListener("DOMContentLoaded", function () {
+            // Função para detectar a versão atual do ECMAScript
             function detectCurrentECMA() {
                 try {
                     eval("let x = () => {}; const y = class {}; x();");
@@ -78,11 +79,11 @@
                 return supportedVersions;
             }
 
-            // Mostrar a versão atual no projeto
+            // Detectar a versão atual e atualizar o HTML
             const currentVersion = detectCurrentECMA();
             document.getElementById("current-ecma").textContent = currentVersion;
 
-            // Mostrar versões suportadas
+            // Detectar versões suportadas e atualizar o HTML
             const supportedVersions = detectSupportedVersions();
             const ul = document.getElementById("supported-ecmas");
             supportedVersions.forEach(version => {
@@ -90,7 +91,7 @@
                 li.textContent = version;
                 ul.appendChild(li);
             });
-        })();
+        });
     </script>
 </body>
 </html>
