@@ -1,116 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detectar Versão ECMAScript</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            padding: 20px;
-        }
-        h1, h2 {
-            text-align: center;
-            color: #444;
-        }
-        p, ul {
-            font-size: 1.1rem;
-        }
-        ul {
-            list-style-type: square;
-            margin-left: 20px;
-        }
-        .highlight {
-            font-weight: bold;
-            color: #0056b3;
-        }
-        .explanation {
-            background-color: #eef;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detectar Versão ECMAScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #444;
+    }
+    p, ul {
+      font-size: 1.1rem;
+    }
+    ul {
+      list-style-type: square;
+      margin-left: 20px;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #0056b3;
+    }
+    .explanation {
+      background-color: #eef;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Detecção de Versão ECMAScript</h1>
-    <p><strong>Versão do ECMAScript utilizada no projeto:</strong> <span id="current-ecma" class="highlight">Carregando...</span></p>
-    <p><strong>Versões de ECMAScript suportadas pelo navegador:</strong></p>
-    <ul id="supported-ecmas">
-        <li>Carregando...</li>
+  <h1>Detecção de Versão ECMAScript</h1>
+  <p><strong>Versão do ECMAScript utilizada no projeto:</strong> <span class="highlight">{{ currentVersion }}</span></p>
+  <p><strong>Versões de ECMAScript suportadas pelo navegador:</strong></p>
+  <ul>
+    <li *ngFor="let version of supportedVersions">{{ version }}</li>
+  </ul>
+
+  <div class="explanation">
+    <h2>Como funciona a detecção:</h2>
+    <p><strong>1. Detecção da versão atual do projeto:</strong></p>
+    <p>A função verifica se os recursos básicos do ES6 (como <code>arrow functions</code> e <code>classes</code>) podem ser executados. 
+    Se forem compatíveis, significa que o projeto está rodando ES6 ou superior.</p>
+
+    <p><strong>2. Detecção de versões suportadas:</strong></p>
+    <p>A função testa a presença de recursos específicos introduzidos em cada versão do ECMAScript. Por exemplo:</p>
+    <ul>
+      <li><strong>ES5:</strong> Verifica se <code>Array.isArray</code> e o objeto <code>JSON</code> estão disponíveis.</li>
+      <li><strong>ES6:</strong> Verifica se <code>const</code>, <code>arrow functions</code>, e <code>template literals</code> são suportados.</li>
+      <li><strong>ES7 a ES12:</strong> Testa recursos adicionais como <code>Array.prototype.includes</code>, <code>Promise.prototype.finally</code>, e <code>BigInt</code>.</li>
     </ul>
+    <p>Cada teste bem-sucedido adiciona a versão correspondente à lista de suportadas.</p>
 
-    <div class="explanation">
-        <h2>Como funciona a detecção:</h2>
-        <p><strong>1. Detecção da versão atual do projeto:</strong></p>
-        <p>A função verifica se os recursos básicos do ES6 (como <code>arrow functions</code> e <code>classes</code>) podem ser executados. 
-        Se forem compatíveis, significa que o projeto está rodando ES6 ou superior.</p>
-
-        <p><strong>2. Detecção de versões suportadas:</strong></p>
-        <p>A função testa a presença de recursos específicos introduzidos em cada versão do ECMAScript. Por exemplo:</p>
-        <ul>
-            <li><strong>ES5:</strong> Verifica se <code>Array.isArray</code> e o objeto <code>JSON</code> estão disponíveis.</li>
-            <li><strong>ES6:</strong> Verifica se <code>const</code>, <code>arrow functions</code>, e <code>template literals</code> são suportados.</li>
-            <li><strong>ES7 a ES12:</strong> Testa recursos adicionais como <code>Array.prototype.includes</code>, <code>Promise.prototype.finally</code>, e <code>BigInt</code>.</li>
-        </ul>
-        <p>Cada teste bem-sucedido adiciona a versão correspondente à lista de suportadas.</p>
-
-        <p><strong>3. Atualização do DOM:</strong></p>
-        <p>Depois que o navegador carrega a página, os resultados são exibidos diretamente no HTML, substituindo os valores padrão "Carregando...".</p>
-    </div>
-
-   <script>
-        // Detecção da versão ECMAScript atual
-        function detectCurrentECMA() {
-            return typeof let !== 'undefined' && typeof const !== 'undefined' ? 'ES6 ou superior' : 'ES5 ou inferior';
-        }
-
-        // Detecção das versões suportadas pelo navegador
-        function detectSupportedVersions() {
-            const versions = [
-                { name: "ES5", test: () => typeof Array.isArray === "function" && typeof JSON === "object" },
-                { name: "ES6 (ES2015)", test: () => typeof let !== 'undefined' },
-                { name: "ES7 (ES2016)", test: () => typeof Array.prototype.includes === "function" },
-                { name: "ES11 (ES2020)", test: () => typeof BigInt === "function" },
-            ];
-
-            return versions
-                .filter(version => version.test())
-                .sort((a, b) => a.name.localeCompare(b.name));
-        }
-
-        // Atualização da interface ao carregar o DOM
-        document.addEventListener("DOMContentLoaded", () => {
-            // Detectar a versão utilizada no projeto
-            const currentVersion = detectCurrentECMA();
-            const currentVersionElement = document.getElementById("current-ecma");
-            currentVersionElement.textContent = currentVersion;  // Substitui "Carregando..." pela versão do projeto
-
-            // Detectar as versões suportadas pelo navegador
-            const supportedVersions = detectSupportedVersions();
-            
-            // Log para depuração
-            console.log("Versões suportadas detectadas:", supportedVersions);
-
-            const supportedVersionsList = document.getElementById("supported-ecmas");
-            supportedVersionsList.innerHTML = "";  // Limpar lista antes de preencher
-
-            // Substituir "Carregando..." nas versões suportadas
-            if (supportedVersions.length > 0) {
-                supportedVersions.forEach(version => {
-                    const li = document.createElement("li");
-                    li.textContent = version.name;
-                    supportedVersionsList.appendChild(li);
-                });
-            } else {
-                // Caso nenhuma versão seja detectada, mostrar uma mensagem padrão
-                const li = document.createElement("li");
-                li.textContent = "Nenhuma versão do ECMAScript suportada detectada.";
-                supportedVersionsList.appendChild(li);
-            }
-        });
-    </script>
+    <p><strong>3. Atualização do DOM:</strong></p>
+    <p>Depois que o navegador carrega a página, os resultados são exibidos diretamente no HTML, substituindo os valores padrão "Carregando...".</p>
+  </div>
 </body>
 </html>
