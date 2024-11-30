@@ -6,64 +6,85 @@
     <title>Detectar Versão ECMAScript</title>
 </head>
 <body>
-    <h1>Detecção de Versão ECMAScript</h1>
-    <p>As versões de ECMAScript suportadas pelo seu navegador são:</p>
-    <ul id="ecmascript-versions"></ul>
+    <h1>Detecção de ECMAScript</h1>
+    <p><strong>Versão do ECMAScript utilizada atualmente no projeto:</strong> <span id="current-ecma"></span></p>
+    <p><strong>Versões de ECMAScript suportadas pelo navegador:</strong></p>
+    <ul id="supported-ecmas"></ul>
 
     <script>
-        (function detectECMAScriptVersion() {
-            const versions = {
-                "ES5": function () {
-                    return typeof Array.isArray === "function" && typeof JSON === "object";
-                },
-                "ES6 (ES2015)": function () {
-                    try {
-                        eval("const x = (a) => a; class Test {} let y = `template`;");
-                        return true;
-                    } catch {
-                        return false;
-                    }
-                },
-                "ES7 (ES2016)": function () {
-                    return typeof Array.prototype.includes === "function";
-                },
-                "ES8 (ES2017)": function () {
-                    return typeof Object.values === "function" && typeof async function () {} === "function";
-                },
-                "ES9 (ES2018)": function () {
-                    return typeof Promise.prototype.finally === "function" && /(?<=b)a/.test("ba");
-                },
-                "ES10 (ES2019)": function () {
-                    return typeof Object.fromEntries === "function" && "flat" in Array.prototype;
-                },
-                "ES11 (ES2020)": function () {
-                    try {
-                        eval("BigInt(123); globalThis; null ?? 'fallback';");
-                        return true;
-                    } catch {
-                        return false;
-                    }
-                },
-                "ES12 (ES2021)": function () {
-                    try {
-                        eval("1_000; let x = { #private: 42 }; x?.#private;");
-                        return true;
-                    } catch {
-                        return false;
-                    }
-                },
-            };
-
-            const supportedVersions = [];
-
-            for (let [version, test] of Object.entries(versions)) {
-                if (test()) {
-                    supportedVersions.push(version);
+        (function detectECMAScript() {
+            // Função para detectar a versão atual do ECMAScript no projeto
+            function detectCurrentECMA() {
+                try {
+                    eval("let x = () => {}; const y = class {}; x();");
+                    return "ES6 ou superior";
+                } catch {
+                    return "ES5 ou inferior";
                 }
             }
 
-            // Atualizar o HTML
-            const ul = document.getElementById("ecmascript-versions");
+            // Função para listar versões suportadas pelo navegador
+            function detectSupportedVersions() {
+                const versions = {
+                    "ES5": function () {
+                        return typeof Array.isArray === "function" && typeof JSON === "object";
+                    },
+                    "ES6 (ES2015)": function () {
+                        try {
+                            eval("const x = (a) => a; class Test {} let y = `template`;");
+                            return true;
+                        } catch {
+                            return false;
+                        }
+                    },
+                    "ES7 (ES2016)": function () {
+                        return typeof Array.prototype.includes === "function";
+                    },
+                    "ES8 (ES2017)": function () {
+                        return typeof Object.values === "function" && typeof async function () {} === "function";
+                    },
+                    "ES9 (ES2018)": function () {
+                        return typeof Promise.prototype.finally === "function" && /(?<=b)a/.test("ba");
+                    },
+                    "ES10 (ES2019)": function () {
+                        return typeof Object.fromEntries === "function" && "flat" in Array.prototype;
+                    },
+                    "ES11 (ES2020)": function () {
+                        try {
+                            eval("BigInt(123); globalThis; null ?? 'fallback';");
+                            return true;
+                        } catch {
+                            return false;
+                        }
+                    },
+                    "ES12 (ES2021)": function () {
+                        try {
+                            eval("1_000; let x = { #private: 42 }; x?.#private;");
+                            return true;
+                        } catch {
+                            return false;
+                        }
+                    },
+                };
+
+                const supportedVersions = [];
+
+                for (let [version, test] of Object.entries(versions)) {
+                    if (test()) {
+                        supportedVersions.push(version);
+                    }
+                }
+
+                return supportedVersions;
+            }
+
+            // Mostrar a versão atual no projeto
+            const currentVersion = detectCurrentECMA();
+            document.getElementById("current-ecma").textContent = currentVersion;
+
+            // Mostrar versões suportadas
+            const supportedVersions = detectSupportedVersions();
+            const ul = document.getElementById("supported-ecmas");
             supportedVersions.forEach(version => {
                 const li = document.createElement("li");
                 li.textContent = version;
