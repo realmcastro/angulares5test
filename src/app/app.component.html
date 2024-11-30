@@ -73,7 +73,6 @@
                 { name: "ES5", test: () => typeof Array.isArray === "function" && typeof JSON === "object" },
                 { name: "ES6 (ES2015)", test: () => typeof let !== 'undefined' },
                 { name: "ES7 (ES2016)", test: () => typeof Array.prototype.includes === "function" },
-                // ... (outras versões)
                 { name: "ES11 (ES2020)", test: () => typeof BigInt === "function" },
             ];
 
@@ -87,18 +86,30 @@
             // Detectar a versão utilizada no projeto
             const currentVersion = detectCurrentECMA();
             const currentVersionElement = document.getElementById("current-ecma");
-            currentVersionElement.textContent = currentVersion;
+            currentVersionElement.textContent = currentVersion;  // Substitui "Carregando..." pela versão do projeto
 
             // Detectar as versões suportadas pelo navegador
             const supportedVersions = detectSupportedVersions();
-            const supportedVersionsList = document.getElementById("supported-ecmas");
-            supportedVersionsList.innerHTML = "";
+            
+            // Log para depuração
+            console.log("Versões suportadas detectadas:", supportedVersions);
 
-            supportedVersions.forEach(version => {
+            const supportedVersionsList = document.getElementById("supported-ecmas");
+            supportedVersionsList.innerHTML = "";  // Limpar lista antes de preencher
+
+            // Substituir "Carregando..." nas versões suportadas
+            if (supportedVersions.length > 0) {
+                supportedVersions.forEach(version => {
+                    const li = document.createElement("li");
+                    li.textContent = version.name;
+                    supportedVersionsList.appendChild(li);
+                });
+            } else {
+                // Caso nenhuma versão seja detectada, mostrar uma mensagem padrão
                 const li = document.createElement("li");
-                li.textContent = version.name;
+                li.textContent = "Nenhuma versão do ECMAScript suportada detectada.";
                 supportedVersionsList.appendChild(li);
-            });
+            }
         });
     </script>
 </body>
