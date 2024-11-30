@@ -4,17 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detectar Versão ECMAScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            color: #444;
+            text-align: center;
+        }
+        p {
+            font-size: 1.1rem;
+        }
+        #loader {
+            font-style: italic;
+            color: #888;
+        }
+        ul {
+            list-style-type: disc;
+            margin: 10px 20px;
+        }
+        li {
+            margin: 5px 0;
+        }
+        .highlight {
+            color: #0056b3;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Detecção de ECMAScript</h1>
-    <p><strong>Versão do ECMAScript utilizada atualmente no projeto:</strong> <span id="current-ecma">Detectando...</span></p>
+    <h1>Detecção de Versão ECMAScript</h1>
+    <p><strong>Versão do ECMAScript utilizada no projeto:</strong> <span id="current-ecma" class="highlight">Carregando...</span></p>
     <p><strong>Versões de ECMAScript suportadas pelo navegador:</strong></p>
-    <ul id="supported-ecmas"></ul>
+    <ul id="supported-ecmas">
+        <li id="loader">Carregando...</li>
+    </ul>
 
     <script>
-        // Esperar o DOM carregar completamente
         document.addEventListener("DOMContentLoaded", function () {
-            // Função para detectar a versão atual do ECMAScript
             function detectCurrentECMA() {
                 try {
                     eval("let x = () => {}; const y = class {}; x();");
@@ -24,7 +56,6 @@
                 }
             }
 
-            // Função para listar versões suportadas pelo navegador
             function detectSupportedVersions() {
                 const versions = {
                     "ES5": function () {
@@ -79,18 +110,27 @@
                 return supportedVersions;
             }
 
-            // Detectar a versão atual e atualizar o HTML
+            // Atualizar a versão do ECMAScript usada no projeto
             const currentVersion = detectCurrentECMA();
-            document.getElementById("current-ecma").textContent = currentVersion;
+            const currentVersionSpan = document.getElementById("current-ecma");
+            currentVersionSpan.textContent = currentVersion;
 
-            // Detectar versões suportadas e atualizar o HTML
+            // Atualizar as versões suportadas no navegador
             const supportedVersions = detectSupportedVersions();
             const ul = document.getElementById("supported-ecmas");
-            supportedVersions.forEach(version => {
+            ul.innerHTML = ""; // Limpar o carregando
+
+            if (supportedVersions.length > 0) {
+                supportedVersions.forEach(version => {
+                    const li = document.createElement("li");
+                    li.textContent = version;
+                    ul.appendChild(li);
+                });
+            } else {
                 const li = document.createElement("li");
-                li.textContent = version;
+                li.textContent = "Nenhuma versão compatível detectada.";
                 ul.appendChild(li);
-            });
+            }
         });
     </script>
 </body>
