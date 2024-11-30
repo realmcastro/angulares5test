@@ -6,8 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  // Variáveis que serão usadas no template
   currentVersion: string = 'Carregando...';
-  supportedVersions: string[] = ['Carregando...'];
+  supportedVersions: string[] = ['Carregando...'];  // Inicializando com "Carregando..." para exibição inicial
 
   ngOnInit() {
     this.detectCurrentECMA();
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
       { name: "ES11 (ES2020)", test: () => typeof BigInt === "function" },
     ];
 
+    // Filtra as versões que são suportadas e retorna apenas os nomes
     this.supportedVersions = versions.filter(version => version.test()).map(version => version.name);
   }
 }
