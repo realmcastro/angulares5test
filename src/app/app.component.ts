@@ -7,23 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   // Variáveis tipadas corretamente
-  currentVersion: string = 'Carregando...';
+  currentVersion: string = ' ECMAScript 5';
   supportedVersions: string[] = ['Carregando...'];  // Inicializado com "Carregando..."
 
   ngOnInit() {
     this.detectCurrentECMA();
     this.detectSupportedVersions();
-  }
-
-  // Função para detectar a versão ECMAScript utilizada no projeto
-  detectCurrentECMA() {
-    try {
-      // Tentando usar let e const, se o navegador não suportar, dará erro
-      eval('let testLet = 1; const testConst = 2;');
-      this.currentVersion = 'ES5';  // Se a execução for bem-sucedida, é ES6 ou superior
-    } catch (e) {
-      this.currentVersion = 'ES5 ou inferior';  // Caso contrário, é ES5 ou inferior
-    }
   }
   
 
