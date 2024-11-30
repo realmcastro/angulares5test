@@ -62,7 +62,7 @@
     </div>
 
     <script>
-        // Função para detectar qual versão está sendo utilizada no projeto
+        // Função para detectar a versão do ECMAScript atual no projeto
         function detectCurrentECMA() {
             try {
                 // Teste básico de recursos do ES6 (ES2015)
@@ -73,7 +73,7 @@
             }
         }
 
-        // Função para detectar quais versões o navegador suporta
+        // Função para detectar as versões suportadas pelo navegador
         function detectSupportedVersions() {
             const versions = [
                 { name: "ES5", test: () => typeof Array.isArray === "function" && typeof JSON === "object" },
@@ -107,7 +107,6 @@
                 }},
             ];
 
-            // Testar cada versão e retornar as suportadas
             return versions.filter(version => version.test()).map(version => version.name);
         }
 
@@ -115,24 +114,24 @@
         document.addEventListener("DOMContentLoaded", () => {
             // Detectar a versão utilizada no projeto
             const currentVersion = detectCurrentECMA();
-            document.getElementById("current-ecma").textContent = currentVersion;
+            const currentVersionElement = document.getElementById("current-ecma");
+            currentVersionElement.textContent = currentVersion;
 
             // Detectar as versões suportadas pelo navegador
             const supportedVersions = detectSupportedVersions();
-            const ul = document.getElementById("supported-ecmas");
-            ul.innerHTML = ""; // Limpar "Carregando..."
+            const supportedVersionsList = document.getElementById("supported-ecmas");
+            supportedVersionsList.innerHTML = ""; // Limpar "Carregando..."
 
-            // Preencher com as versões detectadas
             if (supportedVersions.length > 0) {
                 supportedVersions.forEach(version => {
                     const li = document.createElement("li");
                     li.textContent = version;
-                    ul.appendChild(li);
+                    supportedVersionsList.appendChild(li);
                 });
             } else {
                 const li = document.createElement("li");
                 li.textContent = "Nenhuma versão compatível detectada.";
-                ul.appendChild(li);
+                supportedVersionsList.appendChild(li);
             }
         });
     </script>
