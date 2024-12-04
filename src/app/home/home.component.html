@@ -1,0 +1,16 @@
+<h1>Detecção de Versão ECMAScript</h1>
+<p><strong>Versão do ECMAScript utilizada no projeto:</strong> <span class="highlight">{{ currentVersion }}</span></p>
+<p><strong>Versões de ECMAScript suportadas pelo navegador:</strong></p>
+<ul>
+  <li *ngFor="let version of supportedVersions">{{ version }}</li>
+</ul>
+<div class="explanation">
+  <p><strong>1. Detecção de versões suportadas:</strong></p>
+  <p>A função testa a presença de recursos específicos introduzidos em cada versão do ECMAScript. Por exemplo:</p>
+  <ul>
+    <li><strong>ES5:</strong> Verifica se <code>Array.isArray</code> e o objeto <code>JSON</code> estão disponíveis.</li>
+    <li><strong>ES6:</strong> Verifica se <code>const</code>, <code>arrow functions</code>, e <code>template literals</code> são suportados.</li>
+    <li><strong>ES7 a ES12:</strong> Testa recursos adicionais como <code>Array.prototype.includes</code>, <code>Promise.prototype.finally</code>, e <code>BigInt</code>.</li>
+  </ul>
+  <p>Cada teste bem-sucedido adiciona a versão correspondente à lista de suportadas.</p>
+</div>
