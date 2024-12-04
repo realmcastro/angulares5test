@@ -11,10 +11,9 @@ export class AppComponent implements OnInit {
   supportedVersions: string[] = ['Carregando...'];  // Inicializado com "Carregando..."
 
   ngOnInit() {
-    this.detectCurrentECMA();
+    //this.detectCurrentECMA();
     this.detectSupportedVersions();
   }
-  
 
   // Função para detectar as versões ECMAScript suportadas pelo navegador
   detectSupportedVersions() {
