@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+declare const particlesJS: any; // Declara a função global do Particles.js
 
 @Component({
   selector: 'app-home',
@@ -10,31 +11,33 @@ export class HomeComponent {
   supportedVersions: string[] = ['Carregando...'];  // Inicializado com "Carregando..."
 
   ngOnInit() {
-    //this.detectCurrentECMA();
-    this.detectSupportedVersions();
-  }
+    this.loadParticles();
 
-  // Função para detectar as versões ECMAScript suportadas pelo navegador
-  detectSupportedVersions() {
-    const versions = [
-      { name: "ES5", test: () => typeof Array.isArray === "function" && typeof JSON === "object" },
-      { name: "ES6 (ES2015)", test: () => {
-          try {
-            eval('let testLet = 1; const testConst = 2;');
-            return true;
-          } catch (e) {
-            return false;
-          }
+  }
+  loadParticles(): void {
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80 },
+        size: { value: 4 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#00ff00",
+        },
+        color: { value: "#00ff00" },
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" },
+          onclick: { enable: true, mode: "push" },
+        },
+        modes: {
+          repulse: {
+            distance: 50, // Distância de afastamento
+            duration: 0.4, // Duração do efeito
+          },
         }
       },
-      { name: "ES7 (ES2016)", test: () => typeof Array.prototype.includes === "function" },
-      { name: "ES11 (ES2020)", test: () => typeof BigInt === "function" },
-    ];
-
-    // console.log(this.supportedVersions);
-
-    this.supportedVersions = versions
-      .filter(version => version.test())
-      .map(version => version.name);
+    });
   }
 }
