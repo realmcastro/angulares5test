@@ -1,1 +1,99 @@
-<iframe name="Player" src="//%72%65%64%65%63%61%6E%61%69%73%2E%70%73/player3/server.php?server=RCFServer1&subfolder=ondemand&vid=EFTOBRBLTA" frameborder=0 height=400 scrolling=no width=640 allow="encrypted-media" allowFullScreen> </iframe>
+<div class="movie-list">
+    <div *ngFor="let movie of movies" (click)="selectMovie(movie)" class="movie-item">
+      <img [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path" alt="{{movie.title}}">
+      <h3>{{movie.title}}</h3>
+    </div>
+  </div>
+  
+  <!-- Modal para detalhes do filme -->
+  <div *ngIf="selectedMovie" class="modal-overlay">
+    <div class="modal-content">
+      <button (click)="selectedMovie = null" class="close-btn">✕</button>
+      <h2>{{selectedMovie.title}}</h2>
+      <p>{{selectedMovie.overview}}</p>
+      <div *ngIf="selectedMovie.trailerKey">
+        <iframe [src]="getSafeUrl(selectedMovie.trailerKey)" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+  /* Estilo da lista de filmes */
+  .movie-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .movie-item {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .movie-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  }
+  
+  .movie-item img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  .movie-item h3 {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  /* Modal de detalhes */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: #333;
+    color: #fff;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .modal-content iframe {
+    width: 100%;
+    height: 250px;
+    border-radius: 5px;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .close-btn:hover {
+    color: #ff5f5f;
+  }
+  </style>
+  
